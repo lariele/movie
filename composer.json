@@ -1,0 +1,31 @@
+{
+    "name": "lariele/movie",
+    "description": "Movie components for Laravel Livewire.",
+    "keywords": ["Laravel", "M8M"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Cepec",
+            "email": "daniel.cepec@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "xylis/faker-cinema-providers": "^2.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lariele\\Movie\\MovieServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Lariele\\Movie\\": "src/Movie",
+            "Database\\": "src/Movie/Database"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
