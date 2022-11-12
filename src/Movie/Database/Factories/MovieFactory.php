@@ -31,14 +31,14 @@ class MovieFactory extends Factory
             'name' => $this->faker->movie,
             'year' => $this->faker->year(),
             'description' => $this->faker->text(300),
-            'rating' => rand(45,100),
-            'rating_imdb' => round(rand(45,100)/10,1),
-            'rating_csfd' => rand(45,100),
+            'rating' => rand(45, 100),
+            'rating_imdb' => round(rand(45, 100) / 10, 1),
+            'rating_csfd' => rand(45, 100),
             'genres' => $this->faker->movieGenres(3),
             'actors' => $this->faker->actors($gender = null, $count = 2, $duplicates = false),
-            'on_netflix' => (rand(1,3) == 1),
-            'on_hbo' => (rand(1,3) == 1),
-            'on_disney' => (rand(1,3) == 1),
+            'on_netflix' => (rand(1, 3) == 1),
+            'on_hbo' => (rand(1, 3) == 1),
+            'on_disney' => (rand(1, 3) == 1),
         ];
     }
 }

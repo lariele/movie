@@ -5,8 +5,8 @@ namespace Lariele\Movie\Components\List;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
 use Lariele\Movie\Models\Movie;
+use Livewire\Component;
 
 class MovieListRow extends Component
 {
@@ -16,7 +16,8 @@ class MovieListRow extends Component
 
     public string $rowView = 'list';
 
-    public function mount(Movie $movie) {
+    public function mount(Movie $movie)
+    {
         $this->movie = $movie;
     }
 
@@ -28,6 +29,6 @@ class MovieListRow extends Component
 
     public function render(): Factory|View|Application
     {
-        return view('movie::components.list.row.row-'.$this->rowView);
+        return view('movie::components.list.row.row-' . $this->rowView);
     }
 }

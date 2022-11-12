@@ -2,10 +2,14 @@
 
 namespace Lariele\Movie\Models;
 
+use Database\Factories\MovieFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Database\Factories\MovieFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Lariele\Creator\Models\Creators\Actress;
+use Lariele\Creator\Models\Creators\Director;
 
 class Movie extends Model
 {
@@ -14,7 +18,8 @@ class Movie extends Model
     protected $fillable = [
         'name',
         'year',
-        'categories',
+        'genres',
+        'actors',
     ];
 
     protected $casts = [
@@ -30,5 +35,35 @@ class Movie extends Model
     protected static function newFactory(): Factory
     {
         return MovieFactory::new();
+    }
+
+    /**
+     * Movie Data
+     *
+     * @return HasOne
+     */
+    public function data(): HasOne
+    {
+        return $this->hasOne(Data::class);
+    }
+
+    /**
+     * Movie actress
+     *
+     * @return MorphToMany
+     */
+    public function actress(): MorphToMany
+    {
+        return $this->morphedByMany(Actress::class, 'creatable', 'creatables', 'creatable_id', 'creator_id');
+    }
+
+    /**
+     * Movie directors
+     *
+     * @return MorphToMany
+     */
+    public function directors(): MorphToMany
+    {
+        return $this->morphedByMany(Director::class, 'creatable', 'creatables', 'creatable_id', 'creator_id');
     }
 }

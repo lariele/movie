@@ -1,7 +1,10 @@
 {
     "name": "lariele/movie",
     "description": "Movie components for Laravel Livewire.",
-    "keywords": ["Laravel", "M8M"],
+    "keywords": [
+        "Laravel",
+        "M8M"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -23,6 +26,7 @@
     "autoload": {
         "psr-4": {
             "Lariele\\Movie\\": "src/Movie",
+            "Lariele\\Creator\\": "src/Creator",
             "Database\\": "src/Movie/Database"
         }
     },
