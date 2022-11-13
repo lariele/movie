@@ -6,28 +6,27 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
-use Livewire\Component;
 use Lariele\Movie\Services\MovieListService;
+use Livewire\Component;
 
 class MovieList extends Component
 {
-    protected $listeners = ['refreshList' => '$refresh'];
+    public ?Collection $movies = null;
 
-    protected MovieListService $service;
-
-    public Collection $movies;
-
-    public array $filter = [];
-
+    public array $filter = ['with_media' => true];
     public int $perPage = 15;
     public int $limit = 15;
 
     public string $rowView = 'list';
-
     public bool $showTitle = true;
     public bool $showFilter = true;
+
     public bool $showMore = true;
+    public bool $loadedAll = false;
+
+    protected $listeners = ['refreshList' => '$refresh'];
+
+    protected MovieListService $service;
 
     public function boot(MovieListService $service)
     {
@@ -39,37 +38,41 @@ class MovieList extends Component
         $this->getMovies();
     }
 
+    public function getMovies()
+    {
+        $this->movies = $this->service
+            ->getMovieListQuery($this->filter)
+            ->limit($this->perPage)
+            ->get();
+    }
+
     public function updatedFilter($value)
     {
-        $this->limit = $this->perPage;
+        $this->loadedAll = false;
+        $this->perPage = 20;
         $this->getMovies();
     }
 
     public function loadMore()
     {
-        Log::debug('load more');
-        $this->limit += $this->perPage;
+        $countStart = $this->movies ? count($this->movies) : null;
+
+        $this->perPage += 20;
         $this->getMovies();
+
+        if ($countStart === count($this->movies)) {
+            $this->loadedAll = true;
+        }
     }
 
     public function filterViewList()
     {
         $this->rowView = 'list';
-        Log::debug('list');
     }
 
     public function filterViewBoxed()
     {
         $this->rowView = 'grid';
-        Log::debug('grid');
-    }
-
-    public function getMovies()
-    {
-        $this->movies = $this->service
-            ->getOrderListQuery($this->filter)
-            ->limit($this->limit)
-            ->get();
     }
 
     public function render(): Factory|View|Application

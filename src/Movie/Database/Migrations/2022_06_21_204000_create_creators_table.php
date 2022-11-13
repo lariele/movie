@@ -26,7 +26,7 @@ return new class extends Migration {
         });
 
         Schema::table('creatables', function (Blueprint $table) {
-            $table->smallInteger('creatable_type')->change();
+            #$table->smallInteger('creatable_type')->change();
         });
     }
 

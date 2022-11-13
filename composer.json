@@ -27,6 +27,7 @@
         "psr-4": {
             "Lariele\\Movie\\": "src/Movie",
             "Lariele\\Creator\\": "src/Creator",
+            "Lariele\\Tag\\": "src/Tag",
             "Database\\": "src/Movie/Database"
         }
     },

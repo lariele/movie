@@ -16,7 +16,7 @@
                                          :wire:key="'movie-list-'.$rowView.$movie->id ?? $movie['id']"/>
             @endforeach
         </div>
-        @if($showMore)
+        @if($loadedAll == false)
             <div
                 x-data="{
         observe () {

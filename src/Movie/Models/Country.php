@@ -1,24 +1,24 @@
 <?php
 
-namespace Lariele\Tag\Models;
+namespace Lariele\Movie\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Lariele\Movie\Models\Movie;
 
-class Tag extends Model
+class Country extends Model
 {
     protected $fillable = [
         'name'
     ];
-    
+
     /**
-     * Tag movies
+     * Country movies
      *
      * @return MorphToMany
      */
     public function movies(): MorphToMany
     {
-        return $this->morphedByMany(Movie::class, 'taggable');
+        return $this->morphedByMany(Movie::class, 'countrisable');
     }
 }

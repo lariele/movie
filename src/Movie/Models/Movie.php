@@ -2,6 +2,7 @@
 
 namespace Lariele\Movie\Models;
 
+
 use Database\Factories\MovieFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,10 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Lariele\Creator\Models\Creators\Actress;
 use Lariele\Creator\Models\Creators\Director;
+use Lariele\Tag\Models\Tag;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Movie extends Model
+class Movie extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -58,6 +62,24 @@ class Movie extends Model
     }
 
     /**
+     * Movie categories
+     *
+     * @return MorphToMany
+     */
+    public function categories(): MorphToMany
+    {
+        return $this->morphToMany(Category::class, 'categorisable');
+    }
+
+    /**
+     * Movie countries
+     */
+    public function countries(): MorphToMany
+    {
+        return $this->morphToMany(Country::class, 'countrisable');
+    }
+
+    /**
      * Movie directors
      *
      * @return MorphToMany
@@ -65,5 +87,15 @@ class Movie extends Model
     public function directors(): MorphToMany
     {
         return $this->morphedByMany(Director::class, 'creatable', 'creatables', 'creatable_id', 'creator_id');
+    }
+
+    /**
+     * Movie tags
+     *
+     * @return MorphToMany
+     */
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }

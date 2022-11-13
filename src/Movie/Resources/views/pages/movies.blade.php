@@ -1,3 +1,3 @@
 <div>
-    <livewire:movie-list />
+    <livewire:movie-list/>
 </div>

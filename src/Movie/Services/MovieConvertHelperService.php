@@ -5,7 +5,10 @@ namespace Lariele\Movie\Services;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Lariele\Creator\Models\Creator;
+use Lariele\Movie\Models\Category;
+use Lariele\Movie\Models\Country;
 use Lariele\Movie\Models\Movie;
+use Lariele\Tag\Models\Tag;
 
 class MovieConvertHelperService
 {
@@ -14,41 +17,60 @@ class MovieConvertHelperService
         //
     }
 
-//    public function setCategories($itemCategories)
-//    {
-//        if (empty($itemCategories)) {
-//            return null;
-//        }
-//
-//        $categories = collect([]);
-//        foreach ($itemCategories as $itemCategory) {
-//            $category = Category::query()->updateOrCreate([
-//                'name' => $itemCategory
-//            ]);
-//
-//            $categories->add($category);
-//        }
-//
-//        $this->movie->categories()->sync($categories->pluck('id'));
-//    }
+    public function setCategories($itemCategories)
+    {
+        Log::debug('CATEGORIEs', [$itemCategories]);
+        if (empty($itemCategories)) {
+            return null;
+        }
 
-//    public function setCountries($itemCountries)
-//    {
-//        if (empty($itemCountries)) {
-//            return null;
-//        }
-//
-//        $countries = collect([]);
-//        foreach ($itemCountries as $country) {
-//            $category = Country::query()->updateOrCreate([
-//                'name' => $country
-//            ]);
-//
-//            $countries->add($category);
-//        }
-//
-//        $this->movie->countries()->sync($countries->pluck('id'));
-//    }
+        $categories = collect([]);
+        foreach ($itemCategories as $itemCategory) {
+            $category = Category::query()->updateOrCreate([
+                'name' => $itemCategory
+            ]);
+
+            $categories->add($category);
+        }
+
+        $this->movie->categories()->sync($categories->pluck('id'));
+    }
+
+    public function setTags($itemTags)
+    {
+        if (empty($itemTags)) {
+            return null;
+        }
+
+        $tags = collect([]);
+        foreach ($itemTags as $itemTag) {
+            $tag = Tag::query()->updateOrCreate([
+                'name' => $itemTag
+            ]);
+
+            $tags->add($tag);
+        }
+
+        $this->movie->tags()->sync($tags->pluck('id'));
+    }
+
+    public function setCountries($itemCountries)
+    {
+        if (empty($itemCountries)) {
+            return null;
+        }
+
+        $countries = collect([]);
+        foreach ($itemCountries as $country) {
+            $category = Country::query()->updateOrCreate([
+                'name' => $country
+            ]);
+
+            $countries->add($category);
+        }
+
+        $this->movie->countries()->sync($countries->pluck('id'));
+    }
 
 //    public function setActress($itemActresses)
 //    {
@@ -59,12 +81,8 @@ class MovieConvertHelperService
 
     public function setCreators($creatorsType, $itemCreators)
     {
-        Log::debug('SET CREATORS');
-        exit();
         $creators = $this->updateCreateCreators($itemCreators);
 
-        Log::debug('SET CREATORS');
-        exit();
         $creatorsType->sync($creators->pluck('id'));
     }
 
@@ -84,5 +102,10 @@ class MovieConvertHelperService
         }
 
         return $creators;
+    }
+
+    public function setPoster($url)
+    {
+        $this->movie->addMediaFromUrl($url)->toMediaCollection('posters');
     }
 }

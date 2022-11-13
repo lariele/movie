@@ -27,7 +27,7 @@ return new class extends Migration {
         });
 
         Schema::table('categorisables', function (Blueprint $table) {
-            $table->smallInteger('categorisable_type')->change();
+            #$table->smallInteger('categorisable_type')->change();
         });
     }
 

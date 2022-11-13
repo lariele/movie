@@ -5,21 +5,33 @@ namespace Lariele\Movie\Components;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Lariele\Movie\Models\Movie;
 use Livewire\Component;
-use Lapierre\Order\Models\Order;
 
 class MovieDetail extends Component
 {
-    public $order;
+    public Movie $movie;
 
-    public function mount(Order $order)
+    /**
+     *
+     *
+     * @var array|string[]
+     */
+    protected array $rules = [
+        'order.customer_name' => 'max:32',
+        'order.customer_address' => 'string',
+        'order.price' => 'numeric',
+        'order.status' => 'string',
+        'order.ordered_at' => 'string',
+    ];
+
+    public function mount(Movie $movie)
     {
-        $this->order = $order;
-        #$this->order = OrderModel::query()->where('id', $id)->firstOrFail();
+        $this->movie = $movie;
     }
 
     public function render(): Factory|View|Application
     {
-        return view('order::components.order-detail');
+        return view('movie::components.movie-detail');
     }
 }

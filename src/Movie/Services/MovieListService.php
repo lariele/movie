@@ -3,15 +3,13 @@
 namespace Lariele\Movie\Services;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Log;
-use Lapierre\Order\Models\Order;
 use LaravelIdea\Helper\Lapierre\Order\Models\_IH_Order_QB;
 use Lariele\Movie\Models\Movie;
 
 class MovieListService
 {
 
-    public function getOrderListQuery($filter): _IH_Order_QB|Builder
+    public function getMovieListQuery($filter): _IH_Order_QB|Builder
     {
         $moviesQuery = Movie::query();
 
@@ -23,30 +21,16 @@ class MovieListService
                 });
             }
 
-            $status = [];
-            if (isset($filter['is_active']) && $filter['is_active'] == 1) {
-                array_push($status, 1, 2);
+            if (isset($filter['year_from'])) {
+                $yearFrom = (int)$filter['year_from'];
+                $moviesQuery->whereYear('year', '>=', $yearFrom);
             }
-
-            if (isset($filter['is_inactive']) && $filter['is_inactive'] == 1) {
-                array_push($status, 0, 3);
+            if (isset($filter['year_to'])) {
+                $yearTo = (int)$filter['year_to'];
+                $moviesQuery->whereYear('year', '<', $yearTo);
             }
-
-            if (!empty($status)) {
-                $moviesQuery->whereIn('status', $status);
-            }
-
-            if (isset($filter['on_hbo']) && $filter['on_hbo'] == 1) {
-                Log::debug('here', [$filter]);
-                $moviesQuery->where('on_hbo', '=', 1);
-            }
-
-            if (isset($filter['on_netflix']) && $filter['on_netflix'] == 1) {
-                $moviesQuery->where('on_netflix', '=', 1);
-            }
-
-            if (isset($filter['on_disney']) && $filter['on_disney'] == 1) {
-                $moviesQuery->where('on_disney', '=', 1);
+            if (isset($filter['with_media'])) {
+                $moviesQuery->whereHas('media');
             }
         }
 
