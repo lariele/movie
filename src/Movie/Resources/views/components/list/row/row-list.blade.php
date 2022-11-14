@@ -1,21 +1,46 @@
 <div class="col-span-12 grid grid-cols-8 py-4 border-b">
     <div class="col-span-1">
         {{--        <img src="{{ asset('storage/movies/posters/movie-'.($movie->id % 11 + 1).'.jpg') }}" title=""/>--}}
-
-        @if(!empty($movie->getMedia('posters')->first()))
-            <img src="{{ $movie->getMedia('posters')->first()->getUrl() }}"/>
-        @endif
+        <a href="{{ route('movie', ['movie' => $movie->id, 'movieSlug' => Str::slug($movie->name)]) }}">
+            @if(!empty($movie->getMedia('posters')->first()))
+                <img src="{{ $movie->getMedia('posters')->first()->getUrl() }}"/>
+            @endif
+        </a>
     </div>
 
     <div class="col-span-5 py-4 px-8 flex flex-col">
-        <div class="text-md font-bold mb-1">{{ $movie->name }} <span
-                class="ml-2 font-normal text-slate-600">{{ $movie->year }}</span></div>
-        <div class="flex text-sm space-x-2 text-slate-600">
+        <div class="text-md font-bold">
+            <a href="{{ route('movie', ['movie' => $movie->id, 'movieSlug' => Str::slug($movie->name)]) }}">{{ $movie->name }}</a>
+            <span class="ml-2 font-normal text-slate-600">{{ $movie->year }}</span>
+        </div>
+        <div class="flex text-sm space-x-2 text-slate-600 mb-1">
             @if(!empty($movie->data->duration))
                 <div>{{ $movie->data->duration }} min</div>
             @endif
             <div>{{ $movie->categories->pluck('name')->join(', ') }}</div>
         </div>
+
+        {{--        @if(!empty($movie->providers))--}}
+        {{--            <div class="text-sm mt-2 text-slate-600">--}}
+        {{--                @foreach($movie->providers->take(3) as $provider)--}}
+        {{--                    <span--}}
+        {{--                        class="bg-blue-100 text-blue-800 text-sm font-medium mr-1 px-2.5 py-0.5 rounded">{{$provider->name}}</span>--}}
+        {{--                @endforeach--}}
+        {{--            </div>--}}
+        {{--        @endif--}}
+        @if(!empty($movie->providers))
+            <div class="text-sm mt-2 text-slate-600">
+                @foreach($movie->providers->take(4) as $provider)
+                    @if($provider->name == "Netflix")
+                        <span
+                            class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">{{$provider->name}}</span>
+                    @elseif($provider->name == "HBO Max")
+                        <span
+                            class="bg-purple-100 text-purple-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">{{$provider->name}}</span>
+                    @endif
+                @endforeach
+            </div>
+        @endif
         <div class="mt-2 text-slate-500">
             {{ Str::limit($movie->description,190) }}
         </div>

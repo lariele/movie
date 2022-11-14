@@ -8,6 +8,7 @@ use Lariele\Creator\Models\Creator;
 use Lariele\Movie\Models\Category;
 use Lariele\Movie\Models\Country;
 use Lariele\Movie\Models\Movie;
+use Lariele\Movie\Models\Provider;
 use Lariele\Tag\Models\Tag;
 
 class MovieConvertHelperService
@@ -107,5 +108,23 @@ class MovieConvertHelperService
     public function setPoster($url)
     {
         $this->movie->addMediaFromUrl($url)->toMediaCollection('posters');
+    }
+
+    public function setProviders($providers)
+    {
+        if (empty($providers)) {
+            return null;
+        }
+
+        $countries = collect([]);
+        foreach ($providers as $provider) {
+            $category = Provider::query()->updateOrCreate([
+                'name' => $provider
+            ]);
+
+            $countries->add($category);
+        }
+
+        $this->movie->providers()->sync($countries->pluck('id'));
     }
 }

@@ -1,8 +1,6 @@
 <div class="col-span-12">
     @if($showTitle)
-        <div class="block sm:flex items-center">
-            <h2 class="text-lg font-medium truncate my-4 mr-5">Movies</h2>
-        </div>
+        <h1 class="text-lg font-medium truncate my-4 mr-5">Movies</h1>
     @endif
 
     @if($showFilter)
@@ -16,7 +14,7 @@
                                          :wire:key="'movie-list-'.$rowView.$movie->id ?? $movie['id']"/>
             @endforeach
         </div>
-        @if($loadedAll == false)
+        @if($loadedAll == false && $showMore)
             <div
                 x-data="{
         observe () {

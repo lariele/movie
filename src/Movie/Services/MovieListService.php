@@ -15,12 +15,13 @@ class MovieListService
 
         if ($filter) {
             if (isset($filter['search']) && strlen($filter['search']) > 1) {
-                $moviesQuery->where(function (Builder $qb) use ($filter) {
-                    $qb->where('name', 'LIKE', '%' . $filter['search'] . '%')
-                        ->orWhere('name', 'LIKE', '%' . $filter['search'] . '%');
-                });
+                $this->filterSearch($moviesQuery, $filter['search']);
             }
 
+            if (isset($filter['year'])) {
+                $year = (int)$filter['year'];
+                $moviesQuery->whereYear('year', '=', $year);
+            }
             if (isset($filter['year_from'])) {
                 $yearFrom = (int)$filter['year_from'];
                 $moviesQuery->whereYear('year', '>=', $yearFrom);
@@ -29,13 +30,45 @@ class MovieListService
                 $yearTo = (int)$filter['year_to'];
                 $moviesQuery->whereYear('year', '<', $yearTo);
             }
-            if (isset($filter['with_media'])) {
+            if (isset($filter['has_media'])) {
                 $moviesQuery->whereHas('media');
             }
+            if (isset($filter['has_providers'])) {
+                $moviesQuery->whereHas('providers');
+            }
+
+            if (isset($filter['has_provider'])) {
+                $filterNames = [];
+
+                if (isset($filter['has_provider']['netflix']) && $filter['has_provider']['netflix']) {
+                    $filterNames[] = ["Netflix"];
+                }
+                if (isset($filter['has_provider']['hbo']) && $filter['has_provider']['hbo']) {
+                    $filterNames[] = ["HBO Max"];
+                }
+
+                if (!empty($filterNames)) {
+                    $moviesQuery->whereHas('providers', function (Builder $qb) use ($filterNames) {
+                        $qb->whereIn('name', $filterNames);
+                    });
+                }
+            }
         }
+
+//        $moviesQuery->whereHas('providers', function (Builder $qb) {
+//            $qb->where('name', '=', "Netflix");
+//        });
 
         $moviesQuery->orderBy('created_at', 'DESC');
 
         return $moviesQuery;
+    }
+
+    public function filterSearch(Builder $moviesQuery, $search)
+    {
+        return $moviesQuery->where(function (Builder $qb) use ($search) {
+            $qb->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('name', 'LIKE', '%' . $search . '%');
+        });
     }
 }

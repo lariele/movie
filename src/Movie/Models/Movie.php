@@ -80,6 +80,14 @@ class Movie extends Model implements HasMedia
     }
 
     /**
+     * Movie providers
+     */
+    public function providers(): MorphToMany
+    {
+        return $this->morphToMany(Provider::class, 'providerable');
+    }
+
+    /**
      * Movie directors
      *
      * @return MorphToMany

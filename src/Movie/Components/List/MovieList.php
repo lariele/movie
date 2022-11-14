@@ -13,20 +13,21 @@ class MovieList extends Component
 {
     public ?Collection $movies = null;
 
-    public array $filter = ['with_media' => true];
+    public array $filter = ['has_media' => true, 'has_providers' => true];
+    public $filterYear;
     public int $perPage = 15;
     public int $limit = 15;
 
     public string $rowView = 'list';
     public bool $showTitle = true;
     public bool $showFilter = true;
-
     public bool $showMore = true;
     public bool $loadedAll = false;
 
     protected $listeners = ['refreshList' => '$refresh'];
 
     protected MovieListService $service;
+
 
     public function boot(MovieListService $service)
     {
@@ -35,6 +36,10 @@ class MovieList extends Component
 
     public function mount()
     {
+        if (!empty($this->filterYear)) {
+            $this->filter['year'] = $this->filterYear;
+        }
+        $this->filter['year'] = $this->filterYear;
         $this->getMovies();
     }
 

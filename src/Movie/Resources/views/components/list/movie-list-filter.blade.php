@@ -83,12 +83,12 @@
         </div>
 
         <div class="flex items-center mr-4">
-            <input wire:model="filter.on_netflix" id="on_netflix" type="checkbox" value="1"
+            <input wire:model="filter.has_provider.netflix" id="on_netflix" type="checkbox" value="1"
                    class="w-4 h-4 text-red-600 bg-gray-100 rounded border-gray-300 focus:ring-red-500 focus:ring-2">
             <label for="on_netflix" class="ml-2 text-sm font-medium text-gray-900">Netflix</label>
         </div>
         <div class="flex items-center mr-4">
-            <input wire:model="filter.on_hbo" id="on_hbo" type="checkbox" value="1"
+            <input wire:model="filter.has_provider.hbo" id="on_hbo" type="checkbox" value="1"
                    class="w-4 h-4 text-purple-600 bg-gray-100 rounded border-gray-300 focus:ring-purple-500 focus:ring-2">
             <label for="on_hbo" class="ml-2 text-sm font-medium text-gray-900">HBO</label>
         </div>
