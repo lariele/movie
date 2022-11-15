@@ -1,44 +1,25 @@
 <div class="relative mx-auto relative">
-    <div class="search hidden sm:block">
-        <input wire:model="filter.search" type="text" class="search__input form-control border-transparent"
-               placeholder="Search Actors, Genres, Orders...">
-        <i data-lucide="search" class="search__icon dark:text-slate-500"></i>
+    <label for="table-search" class="sr-only">Search</label>
+    <div class="relative">
+        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor"
+                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clip-rule="evenodd"></path>
+            </svg>
+        </div>
+        <input wire:model="filter.search" type="text" id="table-search"
+               class="block p-2 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+               placeholder="Search Movies, Actors, Genres...">
     </div>
-    <a class="notification notification--light sm:hidden" href="">
-        <i data-lucide="search" class="notification__icon dark:text-slate-500"></i>
-    </a>
     <div class="search-result @if($results->isNotEmpty()) show @endif">
         <div class="search-result__content">
-            {{--            <div class="search-result__content__title">Pages</div>--}}
-            {{--            <div class="mb-5">--}}
-            {{--                <a href="" class="flex items-center">--}}
-            {{--                    <div--}}
-            {{--                        class="w-8 h-8 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full">--}}
-            {{--                        <i class="w-4 h-4" data-lucide="inbox"></i>--}}
-            {{--                    </div>--}}
-            {{--                    <div class="ml-3">Mail Settings</div>--}}
-            {{--                </a>--}}
-            {{--                <a href="" class="flex items-center mt-2">--}}
-            {{--                    <div class="w-8 h-8 bg-pending/10 text-pending flex items-center justify-center rounded-full">--}}
-            {{--                        <i class="w-4 h-4" data-lucide="users"></i>--}}
-            {{--                    </div>--}}
-            {{--                    <div class="ml-3">Users & Permissions</div>--}}
-            {{--                </a>--}}
-            {{--                <a href="" class="flex items-center mt-2">--}}
-            {{--                    <div--}}
-            {{--                        class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">--}}
-            {{--                        <i class="w-4 h-4" data-lucide="credit-card"></i>--}}
-            {{--                    </div>--}}
-            {{--                    <div class="ml-3">Transactions Report</div>--}}
-            {{--                </a>--}}
-            {{--            </div>--}}
-
-
             @if(!empty($results))
-                <div class="search-result__content__title">Orders</div>
-                <div class="mb-5">
+                {{--                <div class="search-result__content__title">Orders</div>--}}
+                <div class="">
                     @foreach ($results as $result)
-                        <a href="{{ route('order', ['order' => $result->id, 'orderSlug' => Str::slug($result->name)]) }}">
+                        <a href="{{ route('movie', ['movie' => $result->id, 'movieSlug' => Str::slug($result->name)]) }}">
                             <div class="flex items-center mt-3">
                                 <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
                                     <img alt="Midone - HTML Admin Template"
@@ -64,16 +45,6 @@
                 </div>
             @endif
 
-            {{--            <div class="search-result__content__title">Products</div>--}}
-            {{--            @foreach (array_slice($fakers, 0, 4) as $faker)--}}
-            {{--                <a href="" class="flex items-center mt-2">--}}
-            {{--                    <div class="w-8 h-8 image-fit">--}}
-            {{--                        <img alt="Midone - HTML Admin Template" class="rounded-full" src="{{ asset('build/assets/images/' . $faker['images'][0]) }}">--}}
-            {{--                    </div>--}}
-            {{--                    <div class="ml-3">{{ $faker['products'][0]['name'] }}</div>--}}
-            {{--                    <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">{{ $faker['products'][0]['category'] }}</div>--}}
-            {{--                </a>--}}
-            {{--            @endforeach--}}
         </div>
     </div>
 </div>

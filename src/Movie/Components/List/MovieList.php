@@ -6,6 +6,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Lariele\Movie\Models\Category;
 use Lariele\Movie\Services\MovieListService;
 use Livewire\Component;
 
@@ -15,6 +16,10 @@ class MovieList extends Component
 
     public array $filter = ['has_media' => true, 'has_providers' => true];
     public $filterYear;
+    public $categories;
+    public $gridCols;
+    public $colSpan;
+    public $showRating;
     public int $perPage = 15;
     public int $limit = 15;
 
@@ -40,7 +45,13 @@ class MovieList extends Component
             $this->filter['year'] = $this->filterYear;
         }
         $this->filter['year'] = $this->filterYear;
+        $this->getCategories();
         $this->getMovies();
+    }
+
+    public function getCategories()
+    {
+        $this->categories = Category::query()->limit(14)->get();
     }
 
     public function getMovies()

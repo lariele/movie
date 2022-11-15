@@ -4,19 +4,20 @@
     @endif
 
     @if($showFilter)
-        <x-movie::list.movie-list-filter row={{$rowView}} />
-    @endif
+        <x-movie::list.movie-list-filter row={{$rowView}} :categories="$categories"/>
+            @endif
 
-    @if(!empty($movies))
-        <div class="grid grid-cols-12 @if($rowView == 'grid') gap-2 @endif">
-            @foreach ($movies as $movie)
-                <livewire:movie-list-row :movie="$movie" :filter="$filter" :rowView="$rowView"
-                                         :wire:key="'movie-list-'.$rowView.$movie->id ?? $movie['id']"/>
-            @endforeach
-        </div>
-        @if($loadedAll == false && $showMore)
-            <div
-                x-data="{
+            @if(!empty($movies))
+                <div class="grid grid-cols-{{ $gridCols ?? 12 }} @if($rowView == 'grid') gap-2 @endif">
+                    @foreach ($movies as $movie)
+                        <livewire:movie-list-row :movie="$movie" :filter="$filter" :rowView="$rowView"
+                                                 :wire:key="'movie-list-'.$rowView.$movie->id ?? $movie['id']"
+                                                 :colSpan="$colSpan" :showRating="$showRating"/>
+                    @endforeach
+                </div>
+                @if($loadedAll == false && $showMore)
+                    <div
+                        x-data="{
         observe () {
             let observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -31,12 +32,12 @@
             observer.observe(this.$el)
         }
     }"
-                x-init="observe"
-                class="my-4"
-            >
-                <x-movie::ui.spinner/>
-            </div>
-        @endif
+                        x-init="observe"
+                        class="my-4"
+                    >
+                        <x-movie::ui.spinner/>
+                    </div>
+    @endif
     @endif
 
     {{--                <div class="intro-y flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-3">--}}

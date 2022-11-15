@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Lariele\Movie\Components\List\MovieList;
 use Lariele\Movie\Components\List\MovieListRow;
 use Lariele\Movie\Components\MovieDetail;
+use Lariele\Movie\Components\Search;
 use Livewire\Livewire;
 
 class MovieServiceProvider extends ServiceProvider
@@ -45,5 +46,6 @@ class MovieServiceProvider extends ServiceProvider
         Livewire::component('movie-list', MovieList::class);
         Livewire::component('movie-detail', MovieDetail::class);
         Livewire::component('movie-list-row', MovieListRow::class);
+        Livewire::component('movie-search', Search::class);
     }
 }

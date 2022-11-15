@@ -33,6 +33,9 @@
                     @elseif($provider->name == "HBO Max")
                         <span
                             class="bg-purple-100 text-purple-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">{{$provider->name}}</span>
+                    @elseif($provider->name == "Disney Plus")
+                        <span
+                            class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">{{$provider->name}}</span>
                     @endif
                 @endforeach
             </div>

@@ -12,6 +12,8 @@ class MovieListRow extends Component
 {
     public Movie $movie;
 
+    public $colSpan;
+    public $showRating;
     public bool $favourite = false;
 
     public string $rowView = 'list';

@@ -30,13 +30,22 @@
         {{--        @endif--}}
         @if(!empty($movie->providers))
             <div class="text-sm mt-2 text-slate-600">
-                @foreach($movie->providers->take(4) as $provider)
+                @foreach($movie->providers as $provider)
                     @if($provider->name == "Netflix")
                         <span
-                            class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">{{$provider->name}}</span>
+                            class="bg-red-100 text-red-800 text-xs font-semibold  px-2.5 py-0.5 rounded">{{$provider->name}}</span>
                     @elseif($provider->name == "HBO Max")
                         <span
-                            class="bg-purple-100 text-purple-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">{{$provider->name}}</span>
+                            class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">{{$provider->name}}</span>
+                    @elseif($provider->name == "Disney Plus")
+                        <span
+                            class="bg-green-100 text-green-800 text-xs font-semibold  px-2.5 py-0.5 rounded">{{$provider->name}}</span>
+                    @elseif($provider->name == "Amazon Prime Video")
+                        <span
+                            class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Amazon Prime</span>
+                        {{--                    @elseif($provider->name == "Mubi")--}}
+                        {{--                        <span--}}
+                        {{--                            class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">{{$provider->name}}</span>--}}
                     @endif
                 @endforeach
             </div>
@@ -94,12 +103,12 @@
 
         <button wire:click="toggleFavourite()" type="button"
                 class="inline-flex h-8 items-center @if(!$favourite) btn-def @else text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 shadow-lg shadow-green-500/50  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 @endif">
-            <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="20"
-                 height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
+            {{--            <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="20"--}}
+            {{--                 height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"--}}
+            {{--                 stroke-linecap="round" stroke-linejoin="round">--}}
+            {{--                <line x1="12" y1="5" x2="12" y2="19"></line>--}}
+            {{--                <line x1="5" y1="12" x2="19" y2="12"></line>--}}
+            {{--            </svg>--}}
             Add to List
         </button>
     </div>

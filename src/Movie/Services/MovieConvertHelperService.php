@@ -3,7 +3,6 @@
 namespace Lariele\Movie\Services;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Lariele\Creator\Models\Creator;
 use Lariele\Movie\Models\Category;
 use Lariele\Movie\Models\Country;
@@ -20,7 +19,6 @@ class MovieConvertHelperService
 
     public function setCategories($itemCategories)
     {
-        Log::debug('CATEGORIEs', [$itemCategories]);
         if (empty($itemCategories)) {
             return null;
         }
