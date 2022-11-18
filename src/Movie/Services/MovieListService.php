@@ -3,6 +3,7 @@
 namespace Lariele\Movie\Services;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 use LaravelIdea\Helper\Lapierre\Order\Models\_IH_Order_QB;
 use Lariele\Movie\Models\Movie;
 
@@ -67,6 +68,7 @@ class MovieListService
                 $categories = $filter['has_categories'];
 
                 if (!empty($categories)) {
+                    Log::debug('HAS CATS', [$categories]);
                     $moviesQuery->whereHas('categories', function (Builder $qb) use ($categories) {
                         $qb->whereIn('id', $categories);
                     });

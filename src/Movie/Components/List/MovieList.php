@@ -14,7 +14,7 @@ class MovieList extends Component
 {
     public ?Collection $movies = null;
 
-    public array $filter = ['has_media' => true, 'has_providers' => true];
+    public array $filter;
     public $filterYear;
     public $categories;
     public $gridCols;
@@ -41,6 +41,8 @@ class MovieList extends Component
 
     public function mount()
     {
+        $this->filter['has_media'] = true;
+        $this->filter['has_providers'] = true;
         if (!empty($this->filterYear)) {
             $this->filter['year'] = $this->filterYear;
         }

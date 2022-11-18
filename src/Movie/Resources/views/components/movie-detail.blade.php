@@ -1,5 +1,6 @@
 <div class="col-span-12">
-    <h1 class="text-lg font-medium truncate mt-4 mr-5">{{ $movie->name }}</h1>
+    <h1 class="text-lg font-medium truncate mt-4 mr-5">{{ $movie->name }} <span
+            class="ml-2 font-normal text-slate-600">{{ $movie->year }}</span></h1>
     <div class="flex space-x-2 text-sm">
         <div>{{ $movie->data->duration }} min</div>
         <div>{{ $movie->categories->pluck('name')->join(', ') }}</div>
@@ -14,18 +15,18 @@
     </div>
 
     <div class="col-span-5 py-4 px-8 flex flex-col">
-        <div class="text-md font-bold mb-1">
-            {{ $movie->name }}
-            <span
-                class="ml-2 font-normal text-slate-600">{{ $movie->year }}</span></div>
-        <div class="flex text-sm space-x-2 text-slate-600">
-            @if(!empty($movie->data->duration))
-                <div>{{ $movie->data->duration }} min</div>
-            @endif
-            <div>{{ $movie->categories->pluck('name')->join(', ') }}</div>
-        </div>
+        {{--        <div class="text-md font-bold mb-1">--}}
+        {{--            {{ $movie->name }}--}}
+        {{--            <span--}}
+        {{--                class="ml-2 font-normal text-slate-600">{{ $movie->year }}</span></div>--}}
+        {{--        <div class="flex text-sm space-x-2 text-slate-600">--}}
+        {{--            @if(!empty($movie->data->duration))--}}
+        {{--                <div>{{ $movie->data->duration }} min</div>--}}
+        {{--            @endif--}}
+        {{--            <div>{{ $movie->categories->pluck('name')->join(', ') }}</div>--}}
+        {{--        </div>--}}
         @if(!empty($movie->providers))
-            <div class="text-sm mt-2 text-slate-600">
+            <div class="text-sm  text-slate-600">
                 @foreach($movie->providers->take(4) as $provider)
                     @if($provider->name == "Netflix")
                         <span
@@ -43,21 +44,10 @@
         <div class="mt-2 text-slate-500">
             {{ Str::limit($movie->description,190) }}
         </div>
-        <div class="text-sm mt-2">
-            @if($movie->on_netflix)
-                <span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Netflix</span>
-            @endif
-            @if($movie->on_hbo)
-                <span class="bg-purple-100 text-purple-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">HBO</span>
-            @endif
-            @if($movie->on_disney)
-                <span class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Disney</span>
-            @endif
-        </div>
         <div class="mt-auto">
             @if($movie->actress->isNotEmpty())
+                <div class="text-sm">Stars</div>
                 <div class="text-slate-500 text-sm mb-1">
-                    Stars
                     @foreach($movie->actress->skip(1)->take(3) as $actor)
                         <a class="@if(!$loop->last)line-delimited @endif text-blue-700 hover:text-blue-800"
                            href="">{{$actor->name}}</a>
@@ -65,8 +55,8 @@
                 </div>
             @endif
             @if($movie->actress->isNotEmpty())
-                <div class="text-slate-500 text-sm">
-                    Directed by
+                <div class="text-sm">
+                    <div class="text-sm">Directed by</div>
                     @foreach($movie->actress->take(3) as $actor)
                         <a class="@if(!$loop->last)line-delimited @endif text-blue-700 hover:text-blue-800"
                            href="">{{$actor->name}}</a>
@@ -102,4 +92,20 @@
         {{--            Add to List--}}
         {{--        </button>--}}
     </div>
+</div>
+<div class="col-span-12 grid-cols-12 grid py-4">
+    <div class="col-span-9 py-4">
+        @if($movie->actress->isNotEmpty())
+            <div class="text-slate-500 text-sm grid grid-cols-12 space-y-2">
+                <div class="col-span-12 mb-1 text-sm">Herci</div>
+                @foreach($movie->actress as $actor)
+                    <a class="text-blue-700 hover:text-blue-800 col-span-3"
+                       href="">{{$actor->name}}</a>
+                @endforeach
+            </div>
+        @endif
+    </div>
+    {{--    <div class="col-span-3 py-4">--}}
+    {{--        test--}}
+    {{--    </div>--}}
 </div>
