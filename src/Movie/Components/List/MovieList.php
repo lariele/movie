@@ -67,7 +67,7 @@ class MovieList extends Component
     public function updatedFilter($value)
     {
         $this->loadedAll = false;
-        $this->perPage = 20;
+        $this->perPage = 15;
         $this->getMovies();
     }
 
@@ -75,7 +75,7 @@ class MovieList extends Component
     {
         $countStart = $this->movies ? count($this->movies) : null;
 
-        $this->perPage += 20;
+        $this->perPage += 15;
         $this->getMovies();
 
         if ($countStart === count($this->movies)) {

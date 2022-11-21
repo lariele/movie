@@ -17,6 +17,11 @@ class MovieConvertHelperService
         //
     }
 
+    public function setData($data)
+    {
+        $this->movie->data()->create($data);
+    }
+
     public function setCategories($itemCategories)
     {
         if (empty($itemCategories)) {
@@ -69,6 +74,20 @@ class MovieConvertHelperService
         }
 
         $this->movie->countries()->sync($countries->pluck('id'));
+    }
+
+    public function setExternals($externals)
+    {
+        if (empty($externals)) {
+            return null;
+        }
+
+
+        foreach ($externals as $external) {
+            #$this->movie->externals()->insert($externals);
+            $this->movie->externals()->create($external);
+        }
+
     }
 
 //    public function setActress($itemActresses)

@@ -4,6 +4,7 @@ namespace Lariele\Movie;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Lariele\Movie\Commands\FlushMovieTables;
 use Lariele\Movie\Components\List\MovieList;
 use Lariele\Movie\Components\List\MovieListRow;
 use Lariele\Movie\Components\MovieDetail;
@@ -29,6 +30,12 @@ class MovieServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FlushMovieTables::class,
+            ]);
+        }
+
         Relation::morphMap(config('models.map'));
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');

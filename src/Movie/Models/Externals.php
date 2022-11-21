@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property mixed $id
  */
-class Sources extends Model
+class Externals extends Model
 {
     public $incrementing = false;
 
@@ -15,12 +15,12 @@ class Sources extends Model
 
     protected $primaryKey = 'movie_id';
 
-    protected $table = 'movies_sources';
+    protected $table = 'externals';
 
     protected $fillable = [
-        'source_id',
-        'source_name',
-        'source_type',
+        'name',
+        'external_id',
+        'type',
     ];
 
     public function movie(): HasOne

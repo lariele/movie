@@ -3,10 +3,12 @@
 namespace Lariele\Movie\Models;
 
 
+use App\SFD\Movie\Models\Sources;
 use Database\Factories\MovieFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Lariele\Creator\Models\Creators\Actress;
@@ -22,6 +24,7 @@ class Movie extends Model implements HasMedia
     protected $fillable = [
         'name',
         'year',
+        'rating',
         'genres',
         'actors',
     ];
@@ -105,5 +108,15 @@ class Movie extends Model implements HasMedia
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    /**
+     * External IDs
+     *
+     * @return HasMany
+     */
+    public function externals(): HasMany
+    {
+        return $this->hasMany(Externals::class);
     }
 }
