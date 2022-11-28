@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property mixed $id
  */
-class Externals extends Model
+class External extends Model
 {
     public $incrementing = false;
 

@@ -117,6 +117,44 @@ class Movie extends Model implements HasMedia
      */
     public function externals(): HasMany
     {
-        return $this->hasMany(Externals::class);
+        return $this->hasMany(External::class);
+    }
+
+    /**
+     * Videos
+     *
+     * @return HasMany
+     */
+    public function videos(): HasMany
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    public function getDescriptionAttribute()
+    {
+        $description = $this->descriptions()->where([
+            'type' => 'def',
+        ])->first();
+
+        return $description?->description;
+    }
+
+    /**
+     * Movie descriptions
+     *
+     * @return HasMany
+     */
+    public function descriptions(): HasMany
+    {
+        return $this->hasMany(Description::class);
+    }
+
+    public function getDescriptionShortAttribute()
+    {
+        $description = $this->descriptions()->where([
+            'type' => 'short',
+        ])->first();
+
+        return $description?->description;
     }
 }

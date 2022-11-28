@@ -3,7 +3,6 @@
 namespace Lariele\Movie\Services;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Log;
 use LaravelIdea\Helper\Lapierre\Order\Models\_IH_Order_QB;
 use Lariele\Movie\Models\Movie;
 
@@ -74,11 +73,9 @@ class MovieListService
                     });
                 }
             }
-        }
 
-//        $moviesQuery->whereHas('providers', function (Builder $qb) {
-//            $qb->where('name', '=', "Netflix");
-//        });
+
+        }
 
         $moviesQuery->orderBy('created_at', 'DESC');
 

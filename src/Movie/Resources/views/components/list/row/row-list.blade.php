@@ -13,7 +13,7 @@
             <a href="{{ route('movie', ['movie' => $movie->id, 'movieSlug' => Str::slug($movie->name)]) }}">{{ $movie->name }}</a>
             <span class="ml-2 font-normal text-slate-600">{{ $movie->year }}</span>
         </div>
-        <div class="flex text-sm space-x-2 text-slate-600 mb-1">
+        <div class="flex text-sm space-x-2 text-slate-600 mb-2">
             @if(!empty($movie->data->duration))
                 <div>{{ $movie->data->duration }} min</div>
             @endif
@@ -29,7 +29,7 @@
         {{--            </div>--}}
         {{--        @endif--}}
         @if(!empty($movie->providers))
-            <div class="text-sm mt-2 text-slate-600">
+            <div class="text-sm mb-4 text-slate-600 ">
                 @foreach($movie->providers as $provider)
                     @if($provider->name == "Netflix")
                         <span
@@ -50,8 +50,12 @@
                 @endforeach
             </div>
         @endif
-        <div class="mt-2 text-slate-500">
-            {{ Str::limit($movie->description,190) }}
+        <div>
+            @if($movie->descriptions->isNotEmpty())
+                <div class="text-sm mb-2 text-slate-600">
+                    {{ $movie->description }}
+                </div>
+            @endif
         </div>
         <div class="text-sm mt-2">
             @if($movie->on_netflix)

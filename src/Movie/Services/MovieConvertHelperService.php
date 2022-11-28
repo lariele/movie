@@ -3,6 +3,7 @@
 namespace Lariele\Movie\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Lariele\Creator\Models\Creator;
 use Lariele\Movie\Models\Category;
 use Lariele\Movie\Models\Country;
@@ -20,6 +21,11 @@ class MovieConvertHelperService
     public function setData($data)
     {
         $this->movie->data()->create($data);
+    }
+
+    public function setDescription($data)
+    {
+        $this->movie->descriptions()->create($data);
     }
 
     public function setCategories($itemCategories)
@@ -90,12 +96,19 @@ class MovieConvertHelperService
 
     }
 
-//    public function setActress($itemActresses)
-//    {
-//        $creators = $this->updateCreateCreators($itemActresses);
-//
-//        $this->movie->actress()->sync($creators->pluck('id'));
-//    }
+    public function setVideos($videos)
+    {
+        if (empty($videos)) {
+            return null;
+        }
+
+
+        foreach ($videos as $video) {
+            Log::debug('helper create video', [$video]);
+            $this->movie->videos()->create($video);
+        }
+
+    }
 
     public function setCreators($creatorsType, $itemCreators)
     {
@@ -125,6 +138,11 @@ class MovieConvertHelperService
     public function setPoster($url)
     {
         $this->movie->addMediaFromUrl($url)->toMediaCollection('posters');
+    }
+
+    public function setBackdrop($url)
+    {
+        $this->movie->addMediaFromUrl($url)->toMediaCollection('backdrops');
     }
 
     public function setProviders($providers)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SFD\Movie\Models;
+namespace Lariele\Movie\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +15,9 @@ class Description extends Model
     protected $table = 'movies_descriptions';
 
     protected $fillable = [
-        'description'
+        'description',
+        'type',
+        'lang',
     ];
 
     public function movie(): BelongsTo

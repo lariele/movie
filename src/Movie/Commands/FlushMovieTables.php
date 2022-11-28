@@ -46,13 +46,14 @@ class FlushMovieTables extends Command
     {
         DB::table('externals')->delete();
         DB::table('movies_data')->delete();
+        DB::table('movies_descriptions')->delete();
         DB::table('movies')->delete();
+        DB::table('videos')->delete();
 
         DB::table('countrisables')->delete();
         DB::table('creatables')->delete();
         DB::table('taggables')->delete();
         DB::table('providerables')->delete();
         DB::table('media')->delete();
-
     }
 }

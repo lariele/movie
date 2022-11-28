@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Lariele\Movie\Models\Category;
 use Lariele\Movie\Services\MovieListService;
+use Lariele\Tag\Models\Tag;
 use Livewire\Component;
 
 class MovieList extends Component
@@ -17,6 +18,7 @@ class MovieList extends Component
     public array $filter;
     public $filterYear;
     public $categories;
+    public $tags;
     public $gridCols;
     public $colSpan;
     public $showRating;
@@ -60,8 +62,14 @@ class MovieList extends Component
     {
         $this->movies = $this->service
             ->getMovieListQuery($this->filter)
+            ->with(['actress', 'descriptions', 'media', 'data', 'categories', 'providers'])
             ->limit($this->perPage)
             ->get();
+    }
+
+    public function getTags()
+    {
+        $this->tags = Tag::query()->limit(14)->get();
     }
 
     public function updatedFilter($value)
