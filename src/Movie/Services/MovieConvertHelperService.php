@@ -3,7 +3,6 @@
 namespace Lariele\Movie\Services;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Lariele\Creator\Models\Creator;
 use Lariele\Movie\Models\Category;
 use Lariele\Movie\Models\Country;
@@ -104,7 +103,6 @@ class MovieConvertHelperService
 
 
         foreach ($videos as $video) {
-            Log::debug('helper create video', [$video]);
             $this->movie->videos()->create($video);
         }
 

@@ -61,7 +61,7 @@ class Movie extends Model implements HasMedia
      */
     public function actress(): MorphToMany
     {
-        return $this->morphedByMany(Actress::class, 'creatable', 'creatables', 'creatable_id', 'creator_id');
+        return $this->morphToMany(Actress::class, 'creatable', 'creatables', 'creatable_id', 'creator_id');
     }
 
     /**

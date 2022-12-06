@@ -23,7 +23,7 @@ class Creator extends Model
      */
     public function movies(): MorphToMany
     {
-        return $this->morphToMany(Movie::class, 'creatable', 'creatables', 'creator_id', 'creatable_id');
+        return $this->morphedByMany(Movie::class, 'creatable', 'creatables', 'creator_id', 'creatable_id');
     }
 
     public function actress()

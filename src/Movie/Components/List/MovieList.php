@@ -15,10 +15,15 @@ class MovieList extends Component
 {
     public ?Collection $movies = null;
 
+    public string $title;
     public array $filter;
-    public $filterYear;
+    public int $filterYear;
+    public ?int $yearFrom = null;
+    public ?int $yearTo = null;
+    public ?array $genres = [];
+    public ?array $keywords = [];
+    public ?array $providers = [];
     public $categories;
-    public $tags;
     public $gridCols;
     public $colSpan;
     public $showRating;
@@ -30,6 +35,14 @@ class MovieList extends Component
     public bool $showFilter = true;
     public bool $showMore = true;
     public bool $loadedAll = false;
+
+    protected $queryString = [
+        'yearFrom',
+        'yearTo',
+        'genres',
+        'keywords',
+        'providers',
+    ];
 
     protected $listeners = ['refreshList' => '$refresh'];
 
@@ -45,11 +58,13 @@ class MovieList extends Component
     {
         $this->filter['has_media'] = true;
         $this->filter['has_providers'] = true;
+
         if (!empty($this->filterYear)) {
             $this->filter['year'] = $this->filterYear;
         }
-        $this->filter['year'] = $this->filterYear;
+
         $this->getCategories();
+        $this->getTags();
         $this->getMovies();
     }
 
@@ -58,25 +73,88 @@ class MovieList extends Component
         $this->categories = Category::query()->limit(14)->get();
     }
 
-    public function getMovies()
-    {
-        $this->movies = $this->service
-            ->getMovieListQuery($this->filter)
-            ->with(['actress', 'descriptions', 'media', 'data', 'categories', 'providers'])
-            ->limit($this->perPage)
-            ->get();
-    }
-
     public function getTags()
     {
         $this->tags = Tag::query()->limit(14)->get();
     }
 
+    public function getMovies()
+    {
+        if (!empty($this->yearFrom)) {
+            $this->filter['year_from'] = $this->yearFrom;
+        }
+        if (!empty($this->yearTo)) {
+            $this->filter['year_to'] = $this->yearTo;
+        }
+        if (!empty($this->genres)) {
+            $this->filter['has_categories'] = collect($this->genres)->filter()->toArray();
+        }
+        if (!empty($this->keywords)) {
+            $this->filter['has_tags'] = collect($this->keywords)->filter()->toArray();
+        }
+        if (!empty($this->providers)) {
+            $this->filter['has_provider'] = collect($this->providers)->filter()->toArray();
+        }
+
+        $this->movies = $this->service
+            ->getMovieListQuery($this->filter)
+            ->with(['actress', 'descriptions', 'media', 'data', 'categories', 'providers'])
+            ->limit($this->perPage)
+            ->get();
+
+        $this->getTitle();
+    }
+
+    public function getTitle()
+    {
+        $title = '';
+
+        foreach (collect($this->genres)->filter()->toArray() as $genre) {
+            $title .= ' ' . $this->categories->firstWhere('id', $genre)->name;
+        }
+
+        foreach (collect($this->keywords)->filter()->toArray() as $keyword) {
+            $title .= ' ' . $this->tags->firstWhere('id', $keyword)->name;
+        }
+
+        $this->title = $title;
+    }
+
     public function updatedFilter($value)
+    {
+        $this->refreshMovies();
+    }
+
+    public function refreshMovies()
     {
         $this->loadedAll = false;
         $this->perPage = 15;
         $this->getMovies();
+    }
+
+    public function updatedYearFrom($value)
+    {
+        $this->refreshMovies();
+    }
+
+    public function updatedYearTo($value)
+    {
+        $this->refreshMovies();
+    }
+
+    public function updatedGenres($value)
+    {
+        $this->refreshMovies();
+    }
+
+    public function updatedKeywords($value)
+    {
+        $this->refreshMovies();
+    }
+
+    public function updatedProviders($value)
+    {
+        $this->refreshMovies();
     }
 
     public function loadMore()

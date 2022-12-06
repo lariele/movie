@@ -17,7 +17,7 @@
                 @foreach($categories as $category)
                     <li>
                         <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <input wire:model="filter.has_categories.{{$category->id}}"
+                            <input wire:model="genres.{{$category->id}}"
                                    id="category-filter-{{$category->id}}"
                                    type="checkbox"
                                    value="{{$category->id}}"

@@ -40,19 +40,19 @@ class MovieListService
             if (isset($filter['has_provider'])) {
                 $filterNames = [];
 
-                if (isset($filter['has_provider']['netflix']) && $filter['has_provider']['netflix']) {
+                if (isset($filter['has_provider']['netflix'])) {
                     $filterNames[] = ["Netflix"];
                 }
-                if (isset($filter['has_provider']['hbo']) && $filter['has_provider']['hbo']) {
+                if (isset($filter['has_provider']['hbo'])) {
                     $filterNames[] = ["HBO Max"];
                 }
-                if (isset($filter['has_provider']['disney']) && $filter['has_provider']['disney']) {
+                if (isset($filter['has_provider']['disney'])) {
                     $filterNames[] = ["Disney Plus"];
                 }
-                if (isset($filter['has_provider']['amazon']) && $filter['has_provider']['amazon']) {
+                if (isset($filter['has_provider']['amazon'])) {
                     $filterNames[] = ["Amazon Prime Video"];
                 }
-                if (isset($filter['has_provider']['mubi']) && $filter['has_provider']['mubi']) {
+                if (isset($filter['has_provider']['mubi'])) {
                     $filterNames[] = ["Mubi"];
                 }
 
@@ -67,14 +67,21 @@ class MovieListService
                 $categories = $filter['has_categories'];
 
                 if (!empty($categories)) {
-                    Log::debug('HAS CATS', [$categories]);
                     $moviesQuery->whereHas('categories', function (Builder $qb) use ($categories) {
                         $qb->whereIn('id', $categories);
                     });
                 }
             }
 
+            if (isset($filter['has_tags'])) {
+                $tags = $filter['has_tags'];
 
+                if (!empty($tags)) {
+                    $moviesQuery->whereHas('tags', function (Builder $qb) use ($tags) {
+                        $qb->whereIn('id', $tags);
+                    });
+                }
+            }
         }
 
         $moviesQuery->orderBy('created_at', 'DESC');
