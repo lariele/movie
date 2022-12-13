@@ -6,6 +6,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 use Lariele\Movie\Models\Category;
 use Lariele\Movie\Services\MovieListService;
 use Lariele\Tag\Models\Tag;
@@ -93,7 +94,7 @@ class MovieList extends Component
             $this->filter['has_tags'] = collect($this->keywords)->filter()->toArray();
         }
         if (!empty($this->providers)) {
-            $this->filter['has_provider'] = collect($this->providers)->filter()->toArray();
+            $this->filter['has_providers'] = collect($this->providers)->filter()->toArray();
         }
 
         $this->movies = $this->service
@@ -117,7 +118,17 @@ class MovieList extends Component
             $title .= ' ' . $this->tags->firstWhere('id', $keyword)->name;
         }
 
-        $this->title = $title;
+        $title .= ' movies ';
+
+        if (!empty($this->providers)) {
+            $title .= ' on';
+
+            foreach (collect($this->providers)->filter()->toArray() as $provider => $used) {
+                $title .= ' ' . Str::ucfirst($provider);
+            }
+        }
+
+        $this->title = Str::ucfirst(trim($title));
     }
 
     public function updatedFilter($value)

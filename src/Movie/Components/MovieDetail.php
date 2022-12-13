@@ -11,20 +11,7 @@ use Livewire\Component;
 class MovieDetail extends Component
 {
     public Movie $movie;
-
-    /**
-     *
-     *
-     * @var array|string[]
-     */
-    protected array $rules = [
-        'order.customer_name' => 'max:32',
-        'order.customer_address' => 'string',
-        'order.price' => 'numeric',
-        'order.status' => 'string',
-        'order.ordered_at' => 'string',
-    ];
-
+    
     public function mount(Movie $movie)
     {
         $this->movie = $movie;

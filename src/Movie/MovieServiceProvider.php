@@ -4,6 +4,7 @@ namespace Lariele\Movie;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Lariele\Creator\Components\CreatorDetail;
 use Lariele\Movie\Commands\FlushMovieTables;
 use Lariele\Movie\Components\List\MovieList;
 use Lariele\Movie\Components\List\MovieListRow;
@@ -41,6 +42,8 @@ class MovieServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
 
         $this->loadViewsFrom(__DIR__ . '/Resources/views', 'movie');
+        $this->loadViewsFrom(__DIR__ . '/../Creator/Resources/views', 'movie-creator');
+
         $this->publishes([
             __DIR__ . '/Resources/views' => resource_path('views/vendor/lariele/movie'),
             __DIR__ . '/Database/Factories' => database_path('factories'),
@@ -54,5 +57,7 @@ class MovieServiceProvider extends ServiceProvider
         Livewire::component('movie-detail', MovieDetail::class);
         Livewire::component('movie-list-row', MovieListRow::class);
         Livewire::component('movie-search', Search::class);
+
+        Livewire::component('movie-creator-detail', CreatorDetail::class);
     }
 }

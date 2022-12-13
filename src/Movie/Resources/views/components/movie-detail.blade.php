@@ -1,3 +1,6 @@
+@section('title')
+    {{ $movie->name }} ({{ $movie->year }})
+@endsection
 <div class="col-span-12">
     <h1 class="text-lg font-medium truncate mt-4 mr-5">{{ $movie->name }} <span
             class="ml-2 font-normal text-slate-600">{{ $movie->year }}</span></h1>
@@ -9,7 +12,6 @@
 </div>
 <div class="col-span-12 grid grid-cols-8 py-4 border-b">
     <div class="col-span-1">
-        {{--        <img src="{{ asset('storage/movies/posters/movie-'.($movie->id % 11 + 1).'.jpg') }}" title=""/>--}}
         @if(!empty($movie->getMedia('posters')->first()))
             <img src="{{ $movie->getMedia('posters')->first()->getUrl() }}"/>
         @endif
@@ -101,7 +103,7 @@
                 <div class="col-span-12 mb-1 text-sm">Actors</div>
                 @foreach($movie->actress as $actor)
                     <a class="text-blue-700 hover:text-blue-800 col-span-3"
-                       href="">{{$actor->name}}</a>
+                       href="{{ route('creator', ['creator' => $actor->id, 'creatorSlug' => \Illuminate\Support\Str::slug($actor->name)]) }}">{{$actor->name}}</a>
                 @endforeach
             </div>
         @endif

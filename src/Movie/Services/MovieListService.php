@@ -33,67 +33,103 @@ class MovieListService
             if (isset($filter['has_media'])) {
                 $moviesQuery->whereHas('media');
             }
-            if (isset($filter['has_providers'])) {
+            if (isset($filter['has_some_providers'])) {
                 $moviesQuery->whereHas('providers');
             }
 
-            if (isset($filter['has_provider'])) {
-                $filterNames = [];
-
-                if (isset($filter['has_provider']['netflix'])) {
-                    $filterNames[] = ["Netflix"];
-                }
-                if (isset($filter['has_provider']['hbo'])) {
-                    $filterNames[] = ["HBO Max"];
-                }
-                if (isset($filter['has_provider']['disney'])) {
-                    $filterNames[] = ["Disney Plus"];
-                }
-                if (isset($filter['has_provider']['amazon'])) {
-                    $filterNames[] = ["Amazon Prime Video"];
-                }
-                if (isset($filter['has_provider']['mubi'])) {
-                    $filterNames[] = ["Mubi"];
-                }
-
-                if (!empty($filterNames)) {
-                    $moviesQuery->whereHas('providers', function (Builder $qb) use ($filterNames) {
-                        $qb->whereIn('name', $filterNames);
-                    });
-                }
+            if (isset($filter['has_providers'])) {
+                $moviesQuery = $this->filterProviders($moviesQuery, $filter['has_providers']);
             }
 
             if (isset($filter['has_categories'])) {
-                $categories = $filter['has_categories'];
-
-                if (!empty($categories)) {
-                    $moviesQuery->whereHas('categories', function (Builder $qb) use ($categories) {
-                        $qb->whereIn('id', $categories);
-                    });
-                }
+                $moviesQuery = $this->filterCategories($moviesQuery, $filter['has_categories']);
             }
 
             if (isset($filter['has_tags'])) {
-                $tags = $filter['has_tags'];
+                $moviesQuery = $this->filterTags($moviesQuery, $filter['has_tags']);
+            }
 
-                if (!empty($tags)) {
-                    $moviesQuery->whereHas('tags', function (Builder $qb) use ($tags) {
-                        $qb->whereIn('id', $tags);
-                    });
-                }
+            if (isset($filter['has_actors'])) {
+                $moviesQuery = $this->filterActors($moviesQuery, $filter['has_actors']);
             }
         }
 
-        $moviesQuery->orderBy('created_at', 'DESC');
+        if (isset($filter['sort_by'])) {
+            $moviesQuery->orderBy($filter['sort_by']['column'], $filter['sort_by']['direction']);
+        } else {
+            $moviesQuery->orderBy('created_at', 'DESC');
+        }
 
         return $moviesQuery;
     }
 
-    public function filterSearch(Builder $moviesQuery, $search)
+    public function filterSearch(Builder $moviesQuery, $search): Builder
     {
         return $moviesQuery->where(function (Builder $qb) use ($search) {
             $qb->where('name', 'LIKE', '%' . $search . '%')
                 ->orWhere('name', 'LIKE', '%' . $search . '%');
         });
+    }
+
+    public function filterProviders(Builder $moviesQuery, $providerList): Builder
+    {
+        $filterNames = [];
+
+        if (isset($providerList['netflix'])) {
+            $filterNames[] = ["Netflix"];
+        }
+        if (isset($providerList['hbo'])) {
+            $filterNames[] = ["HBO Max"];
+        }
+        if (isset($providerList['disney'])) {
+            $filterNames[] = ["Disney Plus"];
+        }
+        if (isset($providerList['amazon'])) {
+            $filterNames[] = ["Amazon Prime Video"];
+        }
+        if (isset($providerList['mubi'])) {
+            $filterNames[] = ["Mubi"];
+        }
+
+        if (!empty($filterNames)) {
+            $moviesQuery->whereHas('providers', function (Builder $qb) use ($filterNames) {
+                $qb->whereIn('name', $filterNames);
+            });
+        }
+
+        return $moviesQuery;
+    }
+
+    public function filterCategories(Builder $moviesQuery, $categories): Builder
+    {
+        if (!empty($categories)) {
+            $moviesQuery->whereHas('categories', function (Builder $qb) use ($categories) {
+                $qb->whereIn('id', $categories);
+            });
+        }
+
+        return $moviesQuery;
+    }
+
+    public function filterTags(Builder $moviesQuery, $tags): Builder
+    {
+        if (!empty($tags)) {
+            $moviesQuery->whereHas('tags', function (Builder $qb) use ($tags) {
+                $qb->whereIn('id', $tags);
+            });
+        }
+
+        return $moviesQuery;
+    }
+
+    public function filterActors(Builder $moviesQuery, $actors): Builder
+    {
+        if (!empty($actors)) {
+            $moviesQuery->whereHas('actress', function (Builder $qb) use ($actors) {
+                $qb->whereIn('id', $actors);
+            });
+        }
+
+        return $moviesQuery;
     }
 }

@@ -1,6 +1,9 @@
+@section('title')
+    {{ $title ? Str::ucfirst($title) : '' }}
+@endsection
 <div class="col-span-12">
     @if($showTitle)
-        <h1 class="text-lg font-medium truncate my-4 mr-5">Movies {{ $title ?? '' }}</h1>
+        <h1 class="text-lg font-medium truncate my-4 mr-5">{{ ucfirst($title) }}</h1>
     @endif
 
     @if($showFilter)

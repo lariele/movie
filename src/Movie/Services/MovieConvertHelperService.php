@@ -3,6 +3,8 @@
 namespace Lariele\Movie\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Lariele\Creator\Models\Creator;
 use Lariele\Movie\Models\Category;
 use Lariele\Movie\Models\Country;
@@ -135,7 +137,18 @@ class MovieConvertHelperService
 
     public function setPoster($url)
     {
-        $this->movie->addMediaFromUrl($url)->toMediaCollection('posters');
+        Log::debug('set poster', [$url]);
+        $cachedFileName = 'public/movies/' . md5($url) . '.jpg';
+
+        if (Storage::exists($cachedFileName)) {
+            Log::debug('exists', [$url]);
+            $fileUrl = Storage::path($cachedFileName);
+            $this->movie->addMedia($fileUrl)->toMediaCollection('posters');
+        } else {
+            Log::debug('download poster', [$url]);
+            Storage::put($cachedFileName, file_get_contents($url));
+            $this->movie->addMediaFromUrl($url)->toMediaCollection('posters');
+        }
     }
 
     public function setBackdrop($url)
