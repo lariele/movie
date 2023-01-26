@@ -74,7 +74,7 @@
                     Stars
                     @foreach($movie->actress->skip(1)->take(3) as $actor)
                         <a class="@if(!$loop->last)line-delimited @endif text-blue-700 hover:text-blue-800"
-                           href="">{{$actor->name}}</a>
+                           href="{{ route('creator', ['creator' => $actor->id, 'creatorSlug' => Str::slug($actor->name)]) }}">{{$actor->name}}</a>
                     @endforeach
                 </div>
             @endif
@@ -83,7 +83,7 @@
                     Directed by
                     @foreach($movie->actress->take(3) as $actor)
                         <a class="@if(!$loop->last)line-delimited @endif text-blue-700 hover:text-blue-800"
-                           href="">{{$actor->name}}</a>
+                           href="{{ route('creator', ['creator' => $actor->id, 'creatorSlug' => Str::slug($actor->name)]) }}">{{$actor->name}}</a>
                     @endforeach
                 </div>
             @endif

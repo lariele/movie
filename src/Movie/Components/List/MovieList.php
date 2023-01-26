@@ -77,6 +77,7 @@ class MovieList extends Component
     public function getTags()
     {
         $this->tags = Tag::query()->limit(14)->get();
+
     }
 
     public function getMovies()
@@ -92,6 +93,12 @@ class MovieList extends Component
         }
         if (!empty($this->keywords)) {
             $this->filter['has_tags'] = collect($this->keywords)->filter()->toArray();
+            foreach ($this->keywords as $k => $keyword) {
+                if (in_array($keyword, $this->tags->keys()->toArray()) === false) {
+                    $this->tags->push(Tag::query()->where('id', $keyword)->first());
+                }
+            }
+
         }
         if (!empty($this->providers)) {
             $this->filter['has_providers'] = collect($this->providers)->filter()->toArray();

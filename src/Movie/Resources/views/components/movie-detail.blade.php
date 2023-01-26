@@ -58,7 +58,7 @@
                     Stars
                     @foreach($movie->actress->skip(1)->take(3) as $actor)
                         <a class="@if(!$loop->last)line-delimited @endif text-blue-700 hover:text-blue-800"
-                           href="">{{$actor->name}}</a>
+                           href="{{ route('creator', ['creator' => $actor->id, 'creatorSlug' => Str::slug($actor->name)]) }}">{{$actor->name}}</a>
                     @endforeach
                 </div>
             @endif
@@ -67,7 +67,7 @@
                     Directed by
                     @foreach($movie->actress->take(3) as $actor)
                         <a class="@if(!$loop->last)line-delimited @endif text-blue-700 hover:text-blue-800"
-                           href="">{{$actor->name}}</a>
+                           href="{{ route('creator', ['creator' => $actor->id, 'creatorSlug' => Str::slug($actor->name)]) }}">{{$actor->name}}</a>
                     @endforeach
                 </div>
             @endif
@@ -103,7 +103,7 @@
                 <div class="col-span-12 mb-1 text-sm">Actors</div>
                 @foreach($movie->actress as $actor)
                     <a class="text-blue-700 hover:text-blue-800 col-span-3"
-                       href="{{ route('creator', ['creator' => $actor->id, 'creatorSlug' => \Illuminate\Support\Str::slug($actor->name)]) }}">{{$actor->name}}</a>
+                       href="{{ route('creator', ['creator' => $actor->id, 'creatorSlug' => Str::slug($actor->name)]) }}">{{$actor->name}}</a>
                 @endforeach
             </div>
         @endif
@@ -143,8 +143,8 @@
             <div>
                 <div class="col-span-12 mb-4 text-sm">Keywords</div>
                 @foreach($movie->tags as $tag)
-                    <button type="button"
-                            class="px-2.5 py-0.5 mr-1 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200">{{$tag->name}}</button>
+                    <a type="button" href="{{ route('movies') }}?keywords[{{$tag->id}}]={{$tag->id}}"
+                       class="inline px-2.5 py-0.5 mr-1 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200">{{$tag->name}}</a>
                 @endforeach
             </div>
         @endif

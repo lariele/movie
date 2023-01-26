@@ -138,22 +138,39 @@ class MovieConvertHelperService
     public function setPoster($url)
     {
         Log::debug('set poster', [$url]);
+
+        $fileUrl = $this->downloadCachedMedia($url);
+
+        if ($fileUrl) {
+            $this->movie->copyMedia($fileUrl)->toMediaCollection('posters');
+        }
+    }
+
+    public function downloadCachedMedia($url): ?string
+    {
         $cachedFileName = 'public/movies/' . md5($url) . '.jpg';
 
-        if (Storage::exists($cachedFileName)) {
+        if (Storage::disk('local')->exists($cachedFileName)) {
             Log::debug('exists', [$url]);
-            $fileUrl = Storage::path($cachedFileName);
-            $this->movie->addMedia($fileUrl)->toMediaCollection('posters');
         } else {
             Log::debug('download poster', [$url]);
-            Storage::put($cachedFileName, file_get_contents($url));
-            $this->movie->addMediaFromUrl($url)->toMediaCollection('posters');
+            if (@getimagesize($url)) {
+                Storage::disk('local')->put($cachedFileName, file_get_contents($url));
+            } else {
+                return null;
+            }
         }
+
+        return Storage::disk('local')->path($cachedFileName);
     }
 
     public function setBackdrop($url)
     {
-        $this->movie->addMediaFromUrl($url)->toMediaCollection('backdrops');
+        $fileUrl = $this->downloadCachedMedia($url);
+
+        if ($fileUrl) {
+            $this->movie->copyMedia($fileUrl)->toMediaCollection('backdrops');
+        }
     }
 
     public function setProviders($providers)
