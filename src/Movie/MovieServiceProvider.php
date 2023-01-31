@@ -46,10 +46,13 @@ class MovieServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/Resources/views' => resource_path('views/vendor/lariele/movie'),
+        ], 'views');
+
+        $this->publishes([
             __DIR__ . '/Database/Factories' => database_path('factories'),
             __DIR__ . '/Database/Migrations' => database_path('migrations'),
             __DIR__ . '/Database/Seeders' => database_path('seeders'),
-        ]);
+        ], 'database');
 
         $this->loadMigrationsFrom(__DIR__ . '/Database/Migrations');
 
